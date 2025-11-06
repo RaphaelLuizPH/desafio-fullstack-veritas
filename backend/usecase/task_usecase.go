@@ -15,3 +15,7 @@ func NewTaskUseCase(repository repository.TaskRepository) TaskUseCase {
 func (tuc *TaskUseCase) GetAllTasks() ([]model.Task, error) {
 return tuc.repo.GetAllTasks();
 }
+
+func (tuc *TaskUseCase) CreateTask(task model.Task) (model.Task, error) {
+	return tuc.repo.CreateTask(task);
+}

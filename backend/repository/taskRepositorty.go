@@ -78,15 +78,24 @@ func (pr *TaskRepository) GetAllTasks() ([]model.Task, error) {
 }
 
 
-func (pr *TaskRepository) CreateTask() (model.Task, error) {
+func (pr *TaskRepository) CreateTask(request model.Task) (model.Task, error) {
 	
 	query, err := pr.db.Prepare("INSERT INTO Tasks" + 
-	"(Title, DueDate, Description, AssignedTo, Status)" +  
-	"VALUES ($1, $1, $1, $1, $1, $1) RETURNIN ID" )
+	"(Title, DueDate, Description, AssignedTo)" +  
+	"VALUES (?, ?, ?, ?);")
 	if err != nil {
 		return model.Task{}, err
 	}
 	
-	query.QueryRow().
+	query.QueryRow(request.Title, request.DueDate, request.Description, request.AssignedTo).Scan();
+	
+	pr.db.QueryRow("SELECT ID from Tasks ORDER BY ID DESC LIMIT 1").Scan(&request.ID);
+
+
+	
+
+
+
+	return request, err
 
 }

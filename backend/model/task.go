@@ -9,12 +9,12 @@ const (
 )
 
 type Task struct {
-	ID          uint   `json:"id"` 
-	Title       string `json:"title"`
+	ID          uint   `json:"id" ` 
+	Title       string `json:"title" binding:"required"`
 	Description string `json:"description"`
 	Status      Status `json:"status"`
-	DueDate     string `json:"due_date"`
 	AssignedTo  uint   `json:"assigned_to"`
+	DueDate     string `json:"due_date"`
 }
 
 

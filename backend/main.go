@@ -33,7 +33,7 @@ func main() {
 
 
 	server.GET("/tasks/all", taskController.GetTasks);
-
+	server.POST("/tasks/", taskController.CreateTask);
 
 	server.Run(":8080")
 }

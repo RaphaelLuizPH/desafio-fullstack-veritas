@@ -10,10 +10,10 @@ import (
 
 const (
 	DB_NAME = "VERITASdb"
-	PORT    = 3307
+	PORT    = 3306
 	USER    = "VERITAS"
 	PASS    = "VERITAS"
-	HOST    = "localhost"
+	HOST    = "db"
 )
 
 
@@ -21,6 +21,7 @@ const (
 // ConnectDB establishes a connection to the database and returns the connection object.
 func ConnectDB() (*sql.DB, error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", USER, PASS, HOST, PORT, DB_NAME)
+	println(dsn);
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)

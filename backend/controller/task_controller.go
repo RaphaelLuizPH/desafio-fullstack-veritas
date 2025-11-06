@@ -1,7 +1,11 @@
 package controller
 
-import "github.com/gin-gonic/gin"
-import "backend/usecase"
+import (
+	"backend/model"
+	"backend/usecase"
+
+	"github.com/gin-gonic/gin"
+)
 
 type taskController struct {
 	useCase usecase.TaskUseCase 
@@ -28,3 +32,24 @@ func (tc *taskController) GetTasks(ctx *gin.Context) {
 
 	ctx.JSON(200, tasks);
 }
+
+func (tc *taskController) CreateTask(ctx *gin.Context) {
+	var taskInput model.Task;
+	if err := ctx.BindJSON(&taskInput); err != nil {
+		ctx.JSON(400, gin.H{
+			"error": "Invalid input",
+		})
+		return;
+	}
+
+	createdTask, err := tc.useCase.CreateTask(taskInput);
+	if err != nil {
+		ctx.JSON(500, gin.H{
+			"error": "Failed to create task" + err.Error(),
+		})
+		return;
+	}
+
+	ctx.JSON(201, createdTask);
+}
+	
