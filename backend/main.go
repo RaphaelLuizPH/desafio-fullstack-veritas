@@ -1,17 +1,22 @@
 package main 
 
-import("github.com/gin-gonic/gin")
+import("github.com/gin-gonic/gin" )
+import "backend/controller"
+
 
 func main() {
 
 	server := gin.Default()
 
+	taskController := controller.NewTaskController()
 
-	server.GET("/task", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"message": "Task endpoint",
-		})
-	})
+
+
+
+
+	server.GET("/tasks/all", taskController.GetTasks);
+
 
 	server.Run(":8080")
 }
+
