@@ -1,14 +1,32 @@
-package main 
+package main
 
-import("github.com/gin-gonic/gin" )
-import "backend/controller"
+import (
+	"backend/controller"
+	"backend/db"
+	"backend/repository"
+	"backend/usecase"
+
+	"github.com/gin-gonic/gin"
+)
 
 
 func main() {
+		server := gin.Default()
 
-	server := gin.Default()
+	dbContext, err := db.ConnectDB();
 
-	taskController := controller.NewTaskController()
+	repository := repository.NewProductRepository(dbContext)
+
+	usecase := usecase.NewTaskUseCase(repository)
+
+	if err != nil {
+		panic("Failed to connect to database: " + err.Error())
+	}
+
+
+
+
+	taskController := controller.NewTaskController(usecase)
 
 
 
