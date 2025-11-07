@@ -2,29 +2,28 @@ import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import Column from "./Column";
 import ax from "../axios/axios";
+import Bin from "./Bin";
+import { useTaskContext } from "./useTaskContext";
+export default function Board({ open }) {
+  const { getters, setters } = useTaskContext();
+  const { todo, inProgress, completed, listMappings } = getters;
+  const { setTodo, setInProgress, setCompleted } = setters;
 
-export default function Board() {
-  const [todo, setTodo] = useState([]);
-  const [inProgress, setInProgress] = useState([]);
-  const [completed, setCompleted] = useState([]);
-  // eslint-ignore-next-line
-  const listMappings = {
-    0: todo,
-    1: inProgress,
-    2: completed,
-  };
+  function setListById(id, list) {
+    switch (id) {
+      case "3":
+        setTodo(list);
+        break;
+      case "2":
+        setInProgress(list);
+        break;
+      case "1":
+        setCompleted(list);
+        break;
+    }
+  }
 
-  useEffect(() => {
-    ax.get("/tasks/all").then((response) => {
-      const tasks = response.data;
-      console.log(tasks)
-      setTodo(tasks.filter((task) => task.status === 0));
-      setInProgress(tasks.filter((task) => task.status === 1));
-      setCompleted(tasks.filter((task) => task.status === 2));
-    });
-  }, []);
-
-  function handleDragEnd(result) {
+  async function handleDragEnd(result) {
     console.log(result);
     const { source, destination } = result;
 
@@ -32,21 +31,29 @@ export default function Board() {
       return;
     }
 
+    if (destination.droppableId === "bin") {
+      const sourceList = Array.from(listMappings[Number(source.droppableId)]);
+      const backupSourceList = Array.from(sourceList);
+      const [movedItem] = sourceList.splice(source.index, 1);
+      setListById(source.droppableId, sourceList);
+
+      ax.delete(`/task/${movedItem.id}`)
+        .then((response) => {
+          console.log("Task deleted successfully:", response.data);
+        })
+        .catch((error) => {
+          setListById(source.droppableId, backupSourceList);
+          console.error("Error deleting task:", error);
+        });
+      return;
+    }
+
     if (source.droppableId === destination.droppableId) {
       const list = Array.from(listMappings[Number(source.droppableId)]);
       const [movedItem] = list.splice(source.index, 1);
       list.splice(destination.index, 0, movedItem);
-      switch (source.droppableId) {
-        case "0":
-          setTodo(list);
-          break;
-        case "1":
-          setInProgress(list);
-          break;
-        case "2":
-          setCompleted(list);
-          break;
-      }
+
+      setListById(source.droppableId, list);
     }
 
     if (source.droppableId !== destination.droppableId) {
@@ -54,41 +61,41 @@ export default function Board() {
       const destinationList = Array.from(
         listMappings[Number(destination.droppableId)]
       );
-      const [movedItem] = sourceList.splice(source.index, 1);
-      destinationList.splice(destination.index, 0, movedItem);
-      switch (source.droppableId) {
-        case "0":
-          setTodo(sourceList);
-          break;
-        case "1":
-          setInProgress(sourceList);
-          break;
-        case "2":
-          setCompleted(sourceList);
-          break;
-      }
 
-      switch (destination.droppableId) {
-        case "0":
-          setTodo(destinationList);
-          break;
-        case "1":
-          setInProgress(destinationList);
-          break;
-        case "2":
-          setCompleted(destinationList);
-          break;
-      }
+      const backupSourceList = Array.from(sourceList);
+      const backupDestinationList = Array.from(destinationList);
+
+      const [movedItem] = sourceList.splice(source.index, 1);
+      movedItem.status = Number(destination.droppableId);
+      destinationList.splice(destination.index, 0, movedItem);
+
+      setListById(source.droppableId, sourceList);
+      setListById(destination.droppableId, destinationList);
+
+      ax.patch("/tasks/", {
+        task_id: movedItem.id,
+        status: movedItem.status,
+      })
+        .then((response) => {
+          console.log("Task status updated successfully:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error updating task status:", error);
+          setListById(source.droppableId, backupSourceList);
+          setListById(destination.droppableId, backupDestinationList);
+        });
     }
   }
-
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex w-[90%] flex-wrap lg:flex-nowrap h-200 p-12 items-center justify-center gap-5 mt-10 m-auto bg-veritas-dark-green">
-          <Column title={"To do"} tasks={todo} id={0} />
-          <Column title={"In Progress"} tasks={inProgress} id={1} />
-          <Column title={"Completed"} tasks={completed} id={2} />
+        <div className="w-[90%] m-auto  bg-veritas-dark-green">
+          <div className="flex  min-h-fit flex-wrap lg:flex-nowrap h-200 p-12 items-center justify-center gap-5 mt-10 m-auto overflow-clip">
+            <Column title={"To do"} tasks={todo} id={3} openForm={open} />
+            <Column title={"In Progress"} tasks={inProgress} id={2} />
+            <Column title={"Completed"} tasks={completed} id={1} />
+          </div>
+          <Bin />
         </div>
       </DragDropContext>
     </>

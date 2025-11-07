@@ -5,9 +5,8 @@
   --color-veritas-textColor: #dfbe8b;
   --color-veritas-light: #f3d7ab;
   --color-veritas-dark: #d4af78;
-  --color-veritas-dark-green: #0C1D24
+  --color-veritas-dark-green: #1c2c32;
 }
-
 
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
@@ -22,6 +21,9 @@
 body {
   background-color: var(--color-veritas-backgroundColor);
 }
+
+
+
 
 .draggable {
   top: auto !important;

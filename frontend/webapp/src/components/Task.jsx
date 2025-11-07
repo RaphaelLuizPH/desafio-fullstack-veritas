@@ -1,14 +1,23 @@
 import { Draggable } from "react-beautiful-dnd";
 import Container from "./Container";
 
-function Task({ id, title, description, status, assignedTo, dueDate, index }) {
+function Task({ id, title, description, status, assignedTo, dueDate, index, editTask }) {
   const getStatusColor = (dragginOver) => {
+    console.log(dragginOver)
     const statusColors = {
-      0: "border-yellow-400",
-      1: "border-blue-400",
-      2: "border-green-400",
+      3: "border-yellow-400 ",
+      2: "border-blue-400",
+      1: "border-green-400",
     };
-    return statusColors[dragginOver] || "border-gray-200";
+    return statusColors[dragginOver] || getStatusColor(status || 1);
+  };
+
+  const DragginScaleStyles = (snapshot) => {
+    if (snapshot.draggingOver == "bin") {
+      return "scale-50 opacity-50";
+    } else {
+      return snapshot.isDragging ? "scale-70 shadow-lg" : "";
+    }
   };
 
   return (
@@ -19,10 +28,12 @@ function Task({ id, title, description, status, assignedTo, dueDate, index }) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div
-            className={`bg-white duration-75 ${
-              snapshot.isDragging ? "scale-120" : ""
-            } rounded-lg m-3 shadow-md p-4 mb-3 border-l-4  ${getStatusColor(snapshot.draggingOver)}`}
+          <div onClick={editTask}
+            className={`bg-white duration-75 ${DragginScaleStyles(
+              snapshot
+            )} rounded-lg m-3 shadow-md p-4 mb-3 border-l-4  ${getStatusColor(
+              snapshot.draggingOver
+            )}`}
           >
             <div className="flex justify-between items-start mb-2">
               <h3 className="font-bold text-lg text-gray-800">{title}</h3>
@@ -34,16 +45,14 @@ function Task({ id, title, description, status, assignedTo, dueDate, index }) {
             )}
 
             <div className="flex items-center justify-between text-xs text-gray-600 mb-2">
-              <span className={`px-2 py-1 rounded ${getStatusColor(status)}`}>
-                {status}
-              </span>
-              {dueDate && <span className="text-gray-500">{dueDate}</span>}
+              {dueDate && (
+                <span className="text-gray-500">Data limite: {dueDate}</span>
+              )}
             </div>
 
             {assignedTo && (
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-gray-600">Assigned to:</span>
-                <div className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center">
+                <div className="ml-auto text-[0.6rem] w-6 h-6 p-6 rounded-full bg-veritas-dark-green text-white flex items-center justify-center">
                   {assignedTo}
                 </div>
               </div>
