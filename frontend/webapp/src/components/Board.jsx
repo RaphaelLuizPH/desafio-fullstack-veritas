@@ -91,9 +91,9 @@ export default function Board({ open }) {
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="w-[90%] m-auto  bg-veritas-dark-green">
           <div className="flex  min-h-fit flex-wrap lg:flex-nowrap h-200 p-12 items-center justify-center gap-5 mt-10 m-auto overflow-clip">
-            <Column title={"To do"} tasks={todo} id={3} openForm={open} />
-            <Column title={"In Progress"} tasks={inProgress} id={2} />
-            <Column title={"Completed"} tasks={completed} id={1} />
+            <Column title={"À Fazer"} tasks={todo} id={3} openForm={open} />
+            <Column title={"Em progresso"} tasks={inProgress} id={2} />
+            <Column title={"Concluído"} tasks={completed} id={1} />
           </div>
           <Bin />
         </div>

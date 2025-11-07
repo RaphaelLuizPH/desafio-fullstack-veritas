@@ -4,11 +4,20 @@ services:
   go-app:
     container_name: go-api-veritas
     image: go-api-veritas
-    build: .
+    build: ./backend
     ports:
       - "8080:8080"
     depends_on:
       - db
+
+  frontend:
+    container_name: veritas-frontend
+    build:
+      context: ./frontend/webapp
+    ports:
+      - "5173:80"  
+    depends_on:
+      - go-app
 
   db:
     container_name: veritas_db
