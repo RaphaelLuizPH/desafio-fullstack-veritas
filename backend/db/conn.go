@@ -8,17 +8,27 @@ import (
 )
 
 
-const (
-	DB_NAME = "VERITASdb"
-	PORT    = 3306
-	USER    = "VERITAS"
-	PASS    = "VERITAS"
-	HOST    = "db"
-)
+// const (
+// 	DB_NAME = "VERITASdb"
+// 	PORT    = 3306
+// 	USER    = "VERITAS"
+// 	PASS    = "VERITAS"
+// 	HOST    = "db"
+// )
+
+ const (
+ 	DB_NAME = "VERITASdb"
+ 	PORT    = 3307
+ 	USER    = "VERITAS"
+ 	PASS    = "VERITAS"
+ 	HOST    = "localhost"
+ )
 
 
 
-// ConnectDB establishes a connection to the database and returns the connection object.
+
+
+
 func ConnectDB() (*sql.DB, error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", USER, PASS, HOST, PORT, DB_NAME)
 	println(dsn);
@@ -27,7 +37,7 @@ func ConnectDB() (*sql.DB, error) {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
 
-	// Verify the connection
+
 	if err := db.Ping(); err != nil {
 		db.Close()
 		return nil, fmt.Errorf("failed to ping database: %w", err)

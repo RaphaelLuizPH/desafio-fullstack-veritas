@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-veritas-backgroundColor: #02141b;
+  --color-veritas-textColor: #dfbe8b;
+  --color-veritas-light: #f3d7ab;
+  --color-veritas-dark: #d4af78;
+  --color-veritas-dark-green: #0C1D24
+}
+
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+body {
+  background-color: var(--color-veritas-backgroundColor);
+}
+
+.draggable {
+  top: auto !important;
+  left: auto !important;
+}
