@@ -30,10 +30,10 @@ function Bin() {
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className={`w-screen h-[10%] bottom-0  bg-veritas-backgroundColor ${
+          className={`w-screen h-[10%] bottom-0   ${
             snapshot.isDraggingOver
-              ? "hover:bg-red-800 hover:shadow-[red_0px_-20px_0px_0px] duration-150 overflow-clip"
-              : ""
+              ? "bg-red-800 shadow-[red_0px_-20px_0px_0px] duration-150 overflow-clip"
+              : "bg-veritas-backgroundColor"
           }     flex items-center justify-center text-white font-bold fixed m-0`}
         >
           {bin}

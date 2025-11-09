@@ -44,7 +44,7 @@ function Column({ title, tasks, id, openForm }) {
   const { openTaskForm, isPendingTask } = util;
 
   return (
-    <div className="2xl:h-[85%] 2xl:min-h-190 xl:min-w-[30%] h-[90%] min-h-fit  w-[30%] 2xl:flex-0 flex-col 3xl:flex-1 bg-veritas-dark ">
+    <div className="2xl:h-[85%] 2xl:min-h-190 xl:min-w-[30%] h-[90%] min-h-fit  w-[30%] 2xl:flex-0 flex-col   mt-2 3xl:flex-1 bg-veritas-dark ">
       <div className="bg-veritas-backgroundColor  h-fit p-4 flex justify-between items-center">
         <h2 className="text-veritas-textColor">
           <span className="text-veritas-light italic mr-1">

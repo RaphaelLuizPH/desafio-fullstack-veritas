@@ -112,14 +112,14 @@ export default function Board({ open }) {
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="w-full h-screen  min-h-fit m-auto  mt-0   bg-veritas-dark-green">
-          <div className="flex h-full min-h-fit w-full flex-wrap lg:flex-nowrap  p-12 pt-1 items-start justify-center gap-5 ">
+        <div className="w-full h-screen  min-h-fit m-auto  bg-veritas-dark-green">
+          <div className="flex h-screen min-h-fit  w-full flex-wrap lg:flex-nowrap  p-12 pt-1 items-start justify-center gap-5 ">
             <Column title={"À Fazer"} tasks={todo} id={3} openForm={open} />
             <Column title={"Em progresso"} tasks={inProgress} id={2} />
             <Column title={"Concluído"} tasks={completed} id={1} />
           </div>
+          <Bin />
         </div>
-        <Bin />
       </DragDropContext>
     </>
   );
