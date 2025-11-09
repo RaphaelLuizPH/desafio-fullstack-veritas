@@ -1,0 +1,31 @@
+.loader {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: 1.2rem;
+  position: relative;
+  background: #fff;
+  box-shadow: -24px 0 #fff, 24px 0 #fff;
+  box-sizing: border-box;
+  animation: shadowPulse 1s linear infinite;
+}
+
+@keyframes shadowPulse {
+  33% {
+    background: var(--color-veritas-light);
+    box-shadow: -24px 0 var(--color-veritas-dark-green),
+      24px 0 var(--color-veritas-light);
+  }
+  66% {
+    background: var(--color-veritas-dark-green);
+    box-shadow: -24px 0 var(--color-veritas-light),
+      24px 0 var(--color-veritas-light);
+  }
+  100% {
+    background: var(--color-veritas-light);
+    box-shadow: -24px 0 var(--color-veritas-light),
+      24px 0 var(--color-veritas-dark-green);
+  }
+}

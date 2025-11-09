@@ -20,11 +20,12 @@ func NewTaskController(usecase usecase.TaskUseCase ) taskController {
 }
 
 func (tc *taskController) GetTasks(ctx *gin.Context) {
+	
 	tasks, err := tc.useCase.GetAllTasks()
 
 	if( err != nil) {
 		ctx.JSON(500, gin.H{
-			"error": "Failed to retrieve tasks",
+			"error": "Falha ao obter tarefas",
 		})
 		return;
 	}
@@ -36,17 +37,24 @@ func (tc *taskController) GetTasks(ctx *gin.Context) {
 
 func (tc *taskController) CreateTask(ctx *gin.Context) {
 	var taskInput model.Task;
-	if err := ctx.BindJSON(&taskInput); err != nil {
+
+	if err := ctx.ShouldBindJSON(&taskInput); err != nil {
 		ctx.JSON(400, gin.H{
-			"error": "Invalid input",
+			"error": "Requisição inválida",
 		})
+		return;
+	}
+
+	
+	if taskInput.Title == "" {
+		ctx.JSON(400, gin.H{"error": "Falta o campo obrigatório: título"})
 		return;
 	}
 
 	createdTask, err := tc.useCase.CreateTask(taskInput);
 	if err != nil {
 		ctx.JSON(500, gin.H{
-			"error": "Failed to create task" + err.Error(),
+			"error": "Falha ao criar tarefa" + err.Error(),
 		})
 		return;
 	}
@@ -56,37 +64,57 @@ func (tc *taskController) CreateTask(ctx *gin.Context) {
 	
 func (tc *taskController) UpdateTask(ctx *gin.Context) {
 	var taskInput model.Task;
-	if err := ctx.BindJSON(&taskInput); err != nil {
+	if err := ctx.ShouldBindJSON(&taskInput); err != nil {
 		ctx.JSON(400, gin.H{
 			"error": "Invalid input",
 		})
 		return;
 	}
 
-	createdTask, err := tc.useCase.UpdateTask(taskInput);
+	
+	if taskInput.ID == 0 {
+		ctx.JSON(400, gin.H{"error": "Id em falta ou inválido"})
+		return;
+	}
+	if taskInput.Title == "" {
+		ctx.JSON(400, gin.H{"error": "Falta o campo obrigatório: título"})
+		return;
+	}
+
+	updatedTask, err := tc.useCase.UpdateTask(taskInput);
 
 	if err != nil {
 		ctx.JSON(500, gin.H{
-			"error": "Failed to create task" + err.Error(),
+			"error": "Falha ao atualizar tarefa" + err.Error(),
 		})
 		return;
 	}
 
-	ctx.JSON(200, createdTask);
+	ctx.JSON(200, updatedTask);
 }
 
 func (tc *taskController) UpdateStatus(ctx *gin.Context) {
 	var updateRequest model.UpdateColumnRequest;
-	if err := ctx.BindJSON(&updateRequest); err != nil {
+	if err := ctx.ShouldBindJSON(&updateRequest); err != nil {
 		ctx.JSON(400, gin.H{
-			"error": "Invalid input",
+			"error": "Requisição inválida",
 		})
 		return;
 	}
+
+	if updateRequest.TaskId == 0 {
+		ctx.JSON(400, gin.H{"error": "Id em falta ou inválido"})
+		return;
+	}
+	if !isValidStatus(updateRequest.Column) {
+		ctx.JSON(400, gin.H{"error": "Valor inválido de status"})
+		return;
+	}
+
 	err := tc.useCase.UpdateStatus(updateRequest);
 	if err != nil {
 		ctx.JSON(500, gin.H{
-			"error": "Failed to update task status",
+			"error": "Falha ao atualizar o status da tarefa",
 		})
 		return;
 	}
@@ -103,12 +131,26 @@ func (tc *taskController) DeleteTask(ctx *gin.Context) {
 		})
 		return;
 	}
+	if taskId == 0 {
+		ctx.JSON(400, gin.H{"error": "Id em falta ou inválido"})
+		return;
+	}
 	err = tc.useCase.DeleteTask(taskId);
 	if err != nil {
 		ctx.JSON(500, gin.H{
-			"error": "Failed to delete task",
+			"error": "Erro do servidor",
 		})
 		return;
 	}
 	ctx.JSON(204, nil);
+}
+
+
+func isValidStatus(s model.Status) bool {
+	switch s {
+	case model.Completed, model.InProgress, model.ToDo:
+		return true
+	default:
+		return false
+	}
 }

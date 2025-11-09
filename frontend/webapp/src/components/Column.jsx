@@ -2,6 +2,7 @@ import { Droppable } from "react-beautiful-dnd";
 import Task from "./Task";
 import Container from "./Container";
 import { useTaskContext } from "./useTaskContext";
+import { useEffect, useState } from "react";
 
 const searchIcon = (
   <svg
@@ -23,24 +24,28 @@ const searchIcon = (
 function Column({ title, tasks, id, openForm }) {
   const { util } = useTaskContext();
 
-  const { openTaskForm } = util;
+  const { openTaskForm, isPendingTask } = util;
+
+  
+
 
   return (
     <div className="h-full w-lg flex-col bg-veritas-dark ">
       <div className="bg-veritas-backgroundColor w-full h-fit p-4 flex justify-between items-center">
         <h2 className="text-veritas-textColor">{title}</h2>
-        {openForm && (
+        {openForm && !isPendingTask && (
           <span onClick={() => openTaskForm()} className="cursor-pointer">
             {" "}
             {searchIcon}{" "}
           </span>
-        )}
+        )}{" "}
+        {isPendingTask && <span class="loader"></span>}
       </div>
 
       <Droppable
         droppableId={id.toString()}
         direction="vertical"
-        isDropDisabled={false}
+        isDropDisabled={isPendingTask}
         isCombineEnabled={false}
         ignoreContainerClipping={false}
       >

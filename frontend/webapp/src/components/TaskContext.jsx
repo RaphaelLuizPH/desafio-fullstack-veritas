@@ -4,13 +4,16 @@ import {
   useContext,
   useEffect,
   useState,
+  useTransition,
 } from "react";
 import Task from "./Task";
 import ax from "../axios/axios";
 import TaskForm from "./Form";
 import { TaskContext } from "./useTaskContext";
+import toast, { Toaster } from "react-hot-toast";
 
 function TaskContextProvider({ children }) {
+  const [isPendingTask, startTransitionTask] = useTransition();
   const [todo, setTodo] = useState([]);
   const [inProgress, setInProgress] = useState([]);
   const [completed, setCompleted] = useState([]);
@@ -41,9 +44,15 @@ function TaskContextProvider({ children }) {
   const getters = { todo, inProgress, completed, listMappings, openForm };
 
   const setters = { setTodo, setInProgress, setCompleted, setOpenForm };
-  const util = { openTaskForm, closeTaskForm };
+  const util = {
+    openTaskForm,
+    closeTaskForm,
+    isPendingTask,
+    startTransitionTask,
+    toast,
+  };
 
-  function handlePost(event) {
+  async function handlePost(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = {
@@ -54,19 +63,20 @@ function TaskContextProvider({ children }) {
       status: 3,
     };
     console.log(data);
-    ax.post("/tasks/", data)
-
-      .then((response) => {
-        console.log("Task created successfully:", response.data);
-
+    await ax.post("/tasks/", data)
+      .then(() => {
         event.target.reset();
+        fetchTasks();
+        setOpenForm({ bool: false, task: null });
       })
       .catch((error) => {
-        console.error("Error creating task:", error);
+          throw error;
       });
   }
 
-  function handlePut(event) {
+  async function handlePut(event) {
+
+  
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = {
@@ -77,23 +87,25 @@ function TaskContextProvider({ children }) {
       status: openForm.task.status,
       id: openForm.task.id,
     };
-    console.log(data);
-    ax.put("/tasks/", data)
 
+    console.log(data);
+    await ax.put("/tasks/", data)
       .then((response) => {
         console.log("Task edited successfully:", response.data);
         setOpenForm({ bool: false, task: null });
+        fetchTasks();
         event.target.reset();
       })
       .catch((error) => {
-        console.error("Error editg task:", error);
+        throw error;
+      
       });
   }
 
   const handleFunction = openForm.task ? handlePut : handlePost;
 
-  useEffect(() => {
-    ax.get("/tasks/all").then((response) => {
+  async function fetchTasks() {
+    await ax.get("/tasks/all").then((response) => {
       const tasks = response.data;
       console.log(tasks);
       if (tasks?.length === 0 || !tasks) return;
@@ -101,7 +113,15 @@ function TaskContextProvider({ children }) {
       setInProgress(tasks.filter((task) => task.status === 2));
       setCompleted(tasks.filter((task) => task.status === 1));
     });
-  }, [openForm]);
+  }
+
+  useEffect(() => {
+    toast.promise(fetchTasks(), {
+      loading: "Carregando tarefas...",
+      success: "Tarefas carregadas com sucesso!",
+      error: "Erro ao carregar as tarefas.",
+    });
+  }, []);
 
   return (
     <TaskContext.Provider value={{ getters, setters, util }}>
@@ -119,6 +139,27 @@ function TaskContextProvider({ children }) {
           />
         </div>
       )}
+      <Toaster
+        position="bottom-center"
+        reverseOrder={false}
+        gutter={8}
+        toasterId="default"
+        toastOptions={{
+          duration: 5000,
+          removeDelay: 1000,
+          style: {
+            background: "var(--color-veritas-dark-green)",
+            color: "var(--color-veritas-light)",
+          },
+          success: {
+            duration: 3000,
+            iconTheme: {
+              primary: "var(--color-veritas-dark)",
+              secondary: "var(--color-veritas-dark-green)",
+            },
+          },
+        }}
+      />
     </TaskContext.Provider>
   );
 }

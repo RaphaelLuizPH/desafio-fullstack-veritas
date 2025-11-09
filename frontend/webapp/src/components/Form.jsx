@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import ax from "../axios/axios";
+import { useTaskContext } from "./useTaskContext";
 
 export default function TaskForm({ updateBoard, task, handleSubmit }) {
   const [users, setUsers] = useState([]);
 
+  const { util } = useTaskContext();
+  const { toast } = util;
+
   useEffect(() => {
-    ax.get("/users/all").then((response) => {
+     ax.get("/users/all").then((response) => {
       const users = response.data;
       setUsers(users);
     });
@@ -15,7 +19,13 @@ export default function TaskForm({ updateBoard, task, handleSubmit }) {
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={async (e) => {
+        toast.promise(handleSubmit(e, task), {
+          loading: "Salvando tarefa...",
+          success: "Tarefa salva com sucesso!",
+          error: "Erro ao salvar a tarefa.",
+        });
+      }}
       className="min-w-lg w-full max-w-66 h-fit m-auto z-99 mx-auto p-6 rounded-2xl shadow-lg space-y-5 bg-veritas-backgroundColor text-veritas-textColor"
     >
       <h2 className="text-2xl font-semibold text-center mb-4 text-veritas-light">

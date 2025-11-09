@@ -1,9 +1,19 @@
 import { Draggable } from "react-beautiful-dnd";
 import Container from "./Container";
+import { useTaskContext } from "./useTaskContext";
 
-function Task({ id, title, description, status, assignedTo, dueDate, index, editTask }) {
+function Task({
+  id,
+  title,
+  description,
+  status,
+  assignedTo,
+  dueDate,
+  index,
+  editTask,
+}) {
   const getStatusColor = (dragginOver) => {
-    console.log(dragginOver)
+    console.log(dragginOver);
     const statusColors = {
       3: "border-yellow-400 ",
       2: "border-blue-400",
@@ -12,23 +22,31 @@ function Task({ id, title, description, status, assignedTo, dueDate, index, edit
     return statusColors[dragginOver] || getStatusColor(status || 1);
   };
 
+  const { util } = useTaskContext();
+  const { isPendingTask } = util;
+
   const DragginScaleStyles = (snapshot) => {
     if (snapshot.draggingOver == "bin") {
       return "scale-50 opacity-50";
     } else {
-      return snapshot.isDragging ? "scale-70 shadow-lg" : "";
+      return snapshot.isDragging ? "scale-90 border-4 shadow-lg" : "";
     }
   };
 
   return (
-    <Draggable draggableId={`${id}_${title}`} index={index}>
+    <Draggable
+      draggableId={`${id}_${title}`}
+      index={index}
+      isDragDisabled={isPendingTask}
+    >
       {(provided, snapshot) => (
         <Container
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div onClick={editTask}
+          <div
+            onClick={editTask}
             className={`bg-white duration-75 ${DragginScaleStyles(
               snapshot
             )} rounded-lg m-3 shadow-md p-4 mb-3 border-l-4  ${getStatusColor(
@@ -51,9 +69,19 @@ function Task({ id, title, description, status, assignedTo, dueDate, index, edit
             </div>
 
             {assignedTo && (
-              <div className="flex items-center gap-2 text-xs">
-                <div className="ml-auto text-[0.6rem] w-6 h-6 p-6 rounded-full bg-veritas-dark-green text-white flex items-center justify-center">
+              <div className="flex items-center justify-between gap-2  text-xs w-full">
+                <p className=" align-baseline font-extrabold w-fit h-fit m-0 p-0">
                   {assignedTo}
+                </p>
+                <div className=" w-12 h-12  ">
+                  <img
+                    className="w-full h-full rounded-2xl "
+                    src={
+                      "https://api.dicebear.com/9.x/thumbs/svg?seed=" +
+                      assignedTo
+                    }
+                    alt="avatar"
+                  />
                 </div>
               </div>
             )}

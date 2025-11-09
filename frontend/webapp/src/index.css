@@ -22,10 +22,9 @@ body {
   background-color: var(--color-veritas-backgroundColor);
 }
 
-
-
-
 .draggable {
   top: auto !important;
   left: auto !important;
 }
+
+
