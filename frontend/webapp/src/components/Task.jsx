@@ -48,9 +48,9 @@ function Task({
         >
           <div
             onClick={editTask}
-            className={`bg-white duration-75 ${DragginScaleStyles(
+            className={`bg-white duration-75  ${DragginScaleStyles(
               snapshot
-            )} rounded-lg m-3 shadow-md p-4 mb-3 border-l-4  ${getStatusColor(
+            )} rounded-lg m-3 shadow-md p-4  mb-3 border-l-4 flex flex-col 2xl:w-120 ${getStatusColor(
               snapshot.draggingOver
             )}`}
           >

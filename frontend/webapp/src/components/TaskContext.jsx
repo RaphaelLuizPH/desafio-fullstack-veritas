@@ -60,23 +60,22 @@ function TaskContextProvider({ children }) {
       description: formData.get("description"),
       due_date: formData.get("due_date"),
       assigned_to: Number(formData.get("assigned_to")),
-      status: 3,
+      status: Number(formData.get("status")),
     };
-   
-    await ax.post("/tasks/", data)
+
+    await ax
+      .post("/tasks/", data)
       .then(() => {
         event.target.reset();
         fetchTasks();
         setOpenForm({ bool: false, task: null });
       })
       .catch((error) => {
-          throw error;
+        throw error;
       });
   }
 
   async function handlePut(event) {
-
-  
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = {
@@ -84,12 +83,12 @@ function TaskContextProvider({ children }) {
       description: formData.get("description"),
       due_date: formData.get("due_date"),
       assigned_to: Number(formData.get("assigned_to")),
-      status: openForm.task.status,
+      status: Number(formData.get("status")),
       id: openForm.task.id,
     };
 
-  
-    await ax.put("/tasks/", data)
+    await ax
+      .put("/tasks/", data)
       .then((response) => {
         console.info("Task edited successfully:", response.data);
         setOpenForm({ bool: false, task: null });
@@ -98,7 +97,6 @@ function TaskContextProvider({ children }) {
       })
       .catch((error) => {
         throw error;
-      
       });
   }
 
@@ -107,7 +105,7 @@ function TaskContextProvider({ children }) {
   async function fetchTasks() {
     await ax.get("/tasks/all").then((response) => {
       const tasks = response.data;
-     
+
       if (tasks?.length === 0 || !tasks) return;
       setTodo(tasks.filter((task) => task.status === 3));
       setInProgress(tasks.filter((task) => task.status === 2));

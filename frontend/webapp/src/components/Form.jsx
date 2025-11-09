@@ -8,14 +8,18 @@ export default function TaskForm({ updateBoard, task, handleSubmit }) {
   const { util } = useTaskContext();
   const { toast } = util;
 
+  const statusOptions = [
+    { value: 3, label: "À Fazer" },
+    { value: 2, label: "Em Progresso" },
+    { value: 1, label: "Concluído" },
+  ];
+
   useEffect(() => {
-     ax.get("/users/all").then((response) => {
+    ax.get("/users/all").then((response) => {
       const users = response.data;
       setUsers(users);
     });
   }, []);
-
-
 
   return (
     <form
@@ -26,7 +30,7 @@ export default function TaskForm({ updateBoard, task, handleSubmit }) {
           error: "Erro ao salvar a tarefa.",
         });
       }}
-      className="min-w-lg w-full max-w-66 h-fit m-auto z-99 mx-auto p-6 rounded-2xl shadow-lg space-y-5 bg-veritas-backgroundColor text-veritas-textColor"
+      className="2xl:min-w-lg overflow-auto w-screen h-[80%] 2xl:w-full 2xl:max-w-66 2xl:h-fit m-auto z-99 mx-auto p-6 rounded-2xl shadow-lg space-y-5 bg-veritas-backgroundColor text-veritas-textColor"
     >
       <h2 className="text-2xl font-semibold text-center mb-4 text-veritas-light">
         {task ? "Editar tarefa" : "Criar nova tarefa"}
@@ -45,7 +49,7 @@ export default function TaskForm({ updateBoard, task, handleSubmit }) {
           id="title"
           name="title"
           type="text"
-          placeholder="Enter task title"
+          placeholder="Título da tarefa"
           className="w-full rounded-lg border border-veritas-dark-green bg-transparent p-2.5 text-veritas-light focus:outline-none focus:ring-2 focus:ring-veritas-dark"
           required
         />
@@ -113,6 +117,31 @@ export default function TaskForm({ updateBoard, task, handleSubmit }) {
             ))}
           </select>
         </div>
+        <div>
+          <label
+            htmlFor="status"
+            className="block text-sm font-medium mb-1 text-veritas-dark"
+          >
+            Status
+          </label>
+          <select
+            defaultValue={task?.status || ""}
+            name="status"
+            id="status"
+            className="w-full dark:scheme-dark rounded-lg border border-veritas-dark-green bg-transparent p-2.5 text-veritas-light focus:outline-none focus:ring-2 focus:ring-veritas-dark"
+          >
+            {statusOptions.map((option) => (
+              <option
+                key={option.value}
+                value={option.value}
+                selected={task?.status === option.value}
+                className="dark:scheme-dark bg-veritas-backgroundColor"
+              >
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Submit */}
@@ -121,9 +150,16 @@ export default function TaskForm({ updateBoard, task, handleSubmit }) {
           type="submit"
           className="w-full font-semibold py-2.5 rounded-lg transition duration-200 bg-veritas-dark-green text-veritas-light hover:bg-veritas-dark hover:text-veritas-backgroundColor"
         >
-          Save Task
+          Salvar tarefa
         </button>
       </div>
+      <button
+        type="button"
+        id="backdrop"
+        className="w-full  font-semibold py-2.5 rounded-lg transition duration-200 bg-veritas-dark-green text-red-400 hover:bg-veritas-dark hover:text-veritas-backgroundColor"
+      >
+        Cancelar
+      </button>
     </form>
   );
 }

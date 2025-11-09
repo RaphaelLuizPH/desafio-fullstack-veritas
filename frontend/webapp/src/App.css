@@ -1,3 +1,32 @@
+.app-header {
+  background: var(--color-veritas-dark-green);
+  color: var(--color-veritas-light);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.app-header__content {
+  text-align:left;
+}
+
+.app-header__title {
+  font-size: clamp(0.5rem, 1vw + 0.75rem, 1rem);
+  letter-spacing: 0.05rem;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.app-header__subtitle {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-veritas-textColor);
+  margin-top: 0.15rem;
+}
+
 .loader {
   width: 10px;
   height: 10px;

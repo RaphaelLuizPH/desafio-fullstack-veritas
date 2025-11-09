@@ -1,9 +1,5 @@
-import { useCallback, useState } from "react";
-
 import "./App.css";
 import Board from "./components/Board.jsx";
-import TaskForm from "./components/Form.jsx";
-import TaskContextProvider from "./components/TaskContext.jsx";
 import { useTaskContext } from "./components/useTaskContext.jsx";
 function App() {
   const { getters, util } = useTaskContext();
@@ -13,7 +9,6 @@ function App() {
   return (
     <>
       <Board openForm={openTaskForm} open={openForm} />
-      <footer className="mt-12 bg-veritas-dark-green w-full h-12"></footer>
     </>
   );
 }

@@ -51,6 +51,12 @@ func (tc *taskController) CreateTask(ctx *gin.Context) {
 		return;
 	}
 
+if !isValidStatus(taskInput.Status) {
+		ctx.JSON(400, gin.H{"error": "Valor inválido de status"})
+		return;
+	}
+
+
 	createdTask, err := tc.useCase.CreateTask(taskInput);
 	if err != nil {
 		ctx.JSON(500, gin.H{

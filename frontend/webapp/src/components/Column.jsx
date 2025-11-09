@@ -44,10 +44,13 @@ function Column({ title, tasks, id, openForm }) {
   const { openTaskForm, isPendingTask } = util;
 
   return (
-    <div className="h-full w-lg flex-col bg-veritas-dark ">
-      <div className="bg-veritas-backgroundColor w-full h-fit p-4 flex justify-between items-center">
+    <div className="2xl:h-[85%] 2xl:min-h-190 h-[90%]  w-[30%] 2xl:flex-0 flex-col 3xl:flex-1 bg-veritas-dark ">
+      <div className="bg-veritas-backgroundColor  h-fit p-4 flex justify-between items-center">
         <h2 className="text-veritas-textColor">
-          {title} <span className="text-veritas-light italic">{tasks?.length} </span>{" "}
+          <span className="text-veritas-light italic mr-1">
+            {tasks?.length }{" "}
+          </span>{" "}
+          {title}{" "}
         </h2>
         {openForm && !isPendingTask && (
           <span onClick={() => openTaskForm()} className="cursor-pointer">
@@ -70,7 +73,7 @@ function Column({ title, tasks, id, openForm }) {
             <Container
               ref={provided.innerRef}
               {...provided.droppableProps}
-              className={"overflow-y-auto no-scrollbar h-[90%]"}
+              className={"overflow-y-auto no-scrollbar h-[90%] w-full flex flex-col flex-2/3  2xl:block"}
             >
               {tasks &&
                 tasks.map((task, index) => (

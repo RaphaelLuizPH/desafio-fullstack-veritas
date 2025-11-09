@@ -6,7 +6,13 @@
   --color-veritas-light: #f3d7ab;
   --color-veritas-dark: #d4af78;
   --color-veritas-dark-green: #1c2c32;
+  --breakpoint-xs: 30rem;
+  --breakpoint-2xl: 110rem;
+  --breakpoint-3xl: 200rem;
 }
+
+
+
 
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {

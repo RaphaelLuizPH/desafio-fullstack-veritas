@@ -8,7 +8,7 @@ function Bin() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="size-6"
+      className="size-[20%] "
     >
       <path
         strokeLinecap="round"
@@ -30,7 +30,7 @@ function Bin() {
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className={`w-screen h-30 bottom-0 bg-veritas-backgroundColor ${
+          className={`w-screen h-[10%] bottom-0  bg-veritas-backgroundColor ${
             snapshot.isDraggingOver
               ? "hover:bg-red-800 hover:shadow-[red_0px_-20px_0px_0px] duration-150 overflow-clip"
               : ""
