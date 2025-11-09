@@ -50,8 +50,7 @@ Comunicação entre frontend e backend acontece por chamadas RESTful com payload
 │   │   ├── task_controller.go
 │   │   └── user_controller.go
 │   ├── db/
-│   │   ├── conn.go
-│   │   └── insert_tasks_real.sql
+│   │   └── conn.go
 │   ├── model/
 │   │   ├── task.go
 │   │   ├── updateRequest.go
@@ -91,15 +90,17 @@ Comunicação entre frontend e backend acontece por chamadas RESTful com payload
 │               ├── TaskContext.jsx
 │               └── useTaskContext.jsx
 │
+├── init-scripts/
+│   └── insert_tasks_real.sql
+│
 └── docs/
-    └── (documentação)
+  └── (documentação)
 
 ```
 
 - **backend/**: microcamadas organizadas (controller → usecase → repository → model) para manter responsabilidades claras.
-
 - **frontend/webapp/**: SPA React criada com Vite; subpastas `components/` concentram UI e lógica do quadro; `axios/` centraliza configurações HTTP.
-
+- **init-scripts/**: scripts SQL opcionais para carga inicial de dados (referenciados via `DB_INIT_SCRIPT`).
 - **docs/**: diagramas do desafio (user flow obrigatório e outros opcionais).
 
 ## Como rodar o projeto
@@ -118,9 +119,9 @@ docker-compose  up  --build
 
 - O backend será exposto em `http://localhost:8080`.
 
-- O frontend será exposto em `http://localhost:5173`.
+- O frontend será exposto em `http://localhost:5174`.
 
-- O container `veritas_db` inicia MySQL em `localhost:3306`.
+- O container `veritas_db` inicia MySQL em `localhost:3307`.
 
 ### Execução manual
 
@@ -132,11 +133,11 @@ cd  backend
 
 go  mod  download
 
-go  run  main.go
+DB_HOST=localhost  DB_PORT=3307  go  run  main.go
 
 ```
 
-- O serviço sobe em `:8080`. Ajuste [`backend/db/conn.go`](backend/db/conn.go) se quiser apontar para outro host/porta.
+- O serviço sobe em `:8080`. O backend lê `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`, `DB_HOST` e `DB_PORT`, assumindo por padrão `db:3306` quando não informados.
 
 #### Frontend
 
@@ -170,7 +171,9 @@ npm  run  dev
 
 | `DB_PORT` | porta TCP | `3306` (Docker) / `3307` (local override) |
 
-O backend hoje utiliza constantes em [`backend/db/conn.go`](backend/db/conn.go). Para ambientes diferentes, mover essas configurações para variáveis de ambiente é o próximo passo recomendado.
+| `DB_INIT_SCRIPT` | caminho absoluto ou relativo do script SQL opcional | vazio |
+
+[`backend/db/conn.go`](backend/db/conn.go) agora resolve host, porta, credenciais e schema a partir dessas variáveis, garantindo defaults seguros quando não forem informadas. Defina `DB_INIT_SCRIPT` para executar o SQL inicial automaticamente.
 
 ## Decisões técnicas
 
@@ -206,7 +209,7 @@ O backend hoje utiliza constantes em [`backend/db/conn.go`](backend/db/conn.go).
 
 - **Validação**: validações de entrada ainda simples (bindings do Gin). Implementar validação personalizada e mensagens localizadas.
 
-- **Segurança**: Proteger endpoints com JWT, aplicando conceitos de autorização e identifição.
+- **Segurança**: Proteger endpoints com JWT, aplicando conceitos de autorização e autenticação.
 
 ## Documentação
 

@@ -19,7 +19,7 @@ function Task({
       1: "border-green-400",
       bin: "border-red-600",
     };
-   
+
     return statusColors[draggingOver] || getStatusColor(status || 1);
   };
 
@@ -65,7 +65,9 @@ function Task({
 
             <div className="flex items-center justify-between text-xs text-gray-600 mb-2">
               {dueDate && (
-                <span className="text-gray-500">Data limite: {dueDate}</span>
+                <span className="text-gray-500">
+                  Data limite: {new Date(dueDate).toLocaleDateString("pt-BR")}
+                </span>
               )}
             </div>
 

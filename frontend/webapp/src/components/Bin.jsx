@@ -21,7 +21,7 @@ function Bin() {
   return (
     <Droppable
       droppableId="bin"
-      direction="horizontal"
+      direction="vertical"
       isDropDisabled={false}
       isCombineEnabled={false}
       ignoreContainerClipping={false}
@@ -30,7 +30,7 @@ function Bin() {
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className={`w-screen h-20 bottom-0 mt-2 bg-veritas-backgroundColor ${
+          className={`w-screen h-30 bottom-0 bg-veritas-backgroundColor ${
             snapshot.isDraggingOver
               ? "hover:bg-red-800 hover:shadow-[red_0px_-20px_0px_0px] duration-150 overflow-clip"
               : ""

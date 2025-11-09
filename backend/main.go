@@ -5,12 +5,18 @@ import (
 	"backend/db"
 	"backend/repository"
 	"backend/usecase"
+	"log"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Printf("no .env file loaded: %v", err)
+	}
+
 	server := gin.Default()
 
 	dbContext, err := db.ConnectDB()
@@ -25,7 +31,7 @@ func main() {
 	userUsecase := usecase.NewUserUseCase(userRepo)
 
 	server.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173", "http://localhost:80"},
+		AllowOrigins:     []string{"http://localhost:5173", "http://localhost:80", "http://localhost:5174"},
 		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},

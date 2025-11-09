@@ -11,6 +11,8 @@ services:
       MYSQL_DATABASE: VERITASdb
       MYSQL_USER: VERITAS
       MYSQL_PASSWORD: VERITAS
+      TZ: 'America/Sao_Paulo'
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
       - "3307:3306"
     volumes:
@@ -29,6 +31,8 @@ services:
     build: ./backend
     ports:
       - "8080:8080"
+    env_file:
+    - ./backend/.env.docker
     depends_on:
       db:
         condition: service_healthy

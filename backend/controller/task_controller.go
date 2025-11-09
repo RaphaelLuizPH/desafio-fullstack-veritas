@@ -112,6 +112,7 @@ func (tc *taskController) UpdateStatus(ctx *gin.Context) {
 	}
 
 	err := tc.useCase.UpdateStatus(updateRequest);
+
 	if err != nil {
 		ctx.JSON(500, gin.H{
 			"error": "Falha ao atualizar o status da tarefa",
