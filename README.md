@@ -4,6 +4,11 @@ Mini Kanban Fullstack – React + Go
 
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white) ![Go](https://img.shields.io/badge/Go-1.25-00ADD8?style=flat-square&logo=go&logoColor=white) ![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=0c0c0c) ![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=flat-square&logo=vite&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql&logoColor=white) ![Beautiful DnD](https://img.shields.io/badge/Beautiful%20DnD-13.1-FF4785?style=flat-square&logo=react&logoColor=white)
 
+
+<img width="1855" height="923" alt="image" src="https://github.com/user-attachments/assets/41c317e6-79d8-448b-adf5-eb31db94aa68" />
+
+
+
 ## Descrição geral
 
 Aplicação fullstack que expõe um quadro Kanban com três colunas fixas (À Fazer, Em Progresso, Concluído). O frontend permite criar, editar, mover e excluir tarefas com drag and drop usando Beautiful DnD. O backend em Go fornece uma API REST que persiste dados em MySQL. Docker Compose orquestra aplicação e banco.
@@ -224,7 +229,9 @@ npm  run  dev
 
 1. Acesse o frontend em `http://localhost:5174`.
 
-2. Utilize o formulário para criar novas tarefas clicando no (+) na coluna de À Fazer. Atribuindo título, descrição, data de vencimento e usuário responsável.
+2. Utilize o formulário para criar novas tarefas clicando no (+) na coluna de À Fazer. Atribuindo título, descrição, data de vencimento e usuário responsável. 
+
+<img width="878" height="791" alt="image" src="https://github.com/user-attachments/assets/35ef29df-5fe6-4df4-ad21-dde700f397d5" />
 
 3. Arraste e solte tarefas entre as colunas "À Fazer", "Em Progresso" e "Concluído" para atualizar seus status.
 
@@ -232,6 +239,7 @@ npm  run  dev
 
 5. Para excluir uma tarefa, arraste-a para o ícone de lixeira (`Bin`) localizado na parte inferior da interface.
 
+<img width="1235" height="788" alt="image" src="https://github.com/user-attachments/assets/c471aefa-b2b2-497a-85dc-1b8d59051c7c" />
 
 
 
