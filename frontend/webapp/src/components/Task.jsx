@@ -55,12 +55,16 @@ function Task({
             )}`}
           >
             <div className="flex justify-between items-start mb-2">
-              <h3 className="font-bold text-lg text-gray-800">{title}</h3>
+              <h3 className="font-bold text-lg text-gray-800 truncate">
+                {title}
+              </h3>
               <span className="text-xs text-gray-500">#{id}</span>
             </div>
 
             {description && (
-              <p className="text-sm text-gray-600 mb-3">{description}</p>
+              <p className="text-sm text-gray-600 mb-3 text-overflow-ellipsis">
+                {description}
+              </p>
             )}
 
             <div className="flex items-center justify-between text-xs text-gray-600 mb-2">

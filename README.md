@@ -219,6 +219,24 @@ npm  run  dev
 
   Ferramenta utilizada: Mermaid.
 
+
+## Guia para utilização da aplicação
+
+1. Acesse o frontend em `http://localhost:5174`.
+
+2. Utilize o formulário para criar novas tarefas clicando no (+) na coluna de À Fazer. Atribuindo título, descrição, data de vencimento e usuário responsável.
+
+3. Arraste e solte tarefas entre as colunas "À Fazer", "Em Progresso" e "Concluído" para atualizar seus status.
+
+4. Para editar uma tarefa, clique nela para abrir o formulário preenchido com os dados atuais.
+
+5. Para excluir uma tarefa, arraste-a para o ícone de lixeira (`Bin`) localizado na parte inferior da interface.
+
+
+
+
+
+
 ## Licença
 
 Projeto entregue para processo seletivo da Veritas Consultoria Empresarial.
