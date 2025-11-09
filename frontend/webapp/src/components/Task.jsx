@@ -12,14 +12,15 @@ function Task({
   index,
   editTask,
 }) {
-  const getStatusColor = (dragginOver) => {
-    console.log(dragginOver);
+  const getStatusColor = (draggingOver) => {
     const statusColors = {
       3: "border-yellow-400 ",
       2: "border-blue-400",
       1: "border-green-400",
+      bin: "border-red-600",
     };
-    return statusColors[dragginOver] || getStatusColor(status || 1);
+   
+    return statusColors[draggingOver] || getStatusColor(status || 1);
   };
 
   const { util } = useTaskContext();
@@ -27,9 +28,9 @@ function Task({
 
   const DragginScaleStyles = (snapshot) => {
     if (snapshot.draggingOver == "bin") {
-      return "scale-50 opacity-50";
+      return " opacity-50 border-4";
     } else {
-      return snapshot.isDragging ? "scale-90 border-4 shadow-lg" : "";
+      return snapshot.isDragging ? " border-4 shadow-lg" : "";
     }
   };
 

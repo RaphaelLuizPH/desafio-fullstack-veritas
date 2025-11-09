@@ -1,4 +1,4 @@
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import Column from "./Column";
 import ax from "../axios/axios";
@@ -25,8 +25,19 @@ export default function Board({ open }) {
     }
   }
 
+  useEffect(() => {
+    const count = todo?.length + inProgress?.length;
+
+    if (count == 0) {
+      window.document.title = ` Board | Concluído: ${completed?.length} `;
+      return;
+    }
+
+    window.document.title = ` Board | Tarefas: ${count} `;
+  }, [completed?.length, inProgress?.length, todo.length]);
+
   async function handleDragEnd(result) {
-    console.log(result);
+  
     const { source, destination } = result;
 
     if (!destination) {
@@ -39,10 +50,11 @@ export default function Board({ open }) {
       const [movedItem] = sourceList.splice(source.index, 1);
       setListById(source.droppableId, sourceList);
 
-      await ax.delete(`/task/${movedItem.id}`)
+      await ax
+        .delete(`/task/${movedItem.id}`)
         .then((response) => {
           toast.success("Tarefa deletada com sucesso!");
-          console.log("Task deleted successfully:", response.data);
+          console.info("Task deleted successfully:", response.data);
         })
         .catch((error) => {
           toast.error("Erro ao deletar a tarefa. " + error.message);
@@ -75,31 +87,33 @@ export default function Board({ open }) {
 
       setListById(source.droppableId, sourceList);
       setListById(destination.droppableId, destinationList);
-      startTransitionTask(async () =>
-       await ax
-          .patch("/tasks/", {
-            task_id: movedItem.id,
-            status: movedItem.status,
-          })
-          .then((response) => {
-            toast.success("Status da tarefa atualizado com sucesso!");
-            console.log("Task status updated successfully:", response.data);
-          })
-          .catch((error) => {
-            toast.error(
-              "Erro ao atualizar o status da tarefa. " + error.message
-            );
-            console.error("Error updating task status:", error);
-            setListById(source.droppableId, backupSourceList);
-            setListById(destination.droppableId, backupDestinationList);
-          })
+      startTransitionTask(
+        async () =>
+          await ax
+            .patch("/tasks/", {
+              task_id: movedItem.id,
+              status: movedItem.status,
+            })
+            .then((response) => {
+              toast.success("Status da tarefa atualizado com sucesso!");
+              console.info("Task status updated successfully:", response.data);
+            })
+            .catch((error) => {
+              console.error(error);
+              toast.error(
+                "Erro ao atualizar o status da tarefa. " + error.message
+              );
+              console.error("Error updating task status:", error);
+              setListById(source.droppableId, backupSourceList);
+              setListById(destination.droppableId, backupDestinationList);
+            })
       );
     }
   }
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="w-[90%] m-auto  bg-veritas-dark-green">
+        <div className="w-full m-auto mb-20 bg-veritas-dark-green">
           <div className="flex  min-h-fit flex-wrap lg:flex-nowrap h-200 p-12 items-center justify-center gap-5 mt-10 m-auto overflow-clip">
             <Column title={"À Fazer"} tasks={todo} id={3} openForm={open} />
             <Column title={"Em progresso"} tasks={inProgress} id={2} />

@@ -62,7 +62,7 @@ function TaskContextProvider({ children }) {
       assigned_to: Number(formData.get("assigned_to")),
       status: 3,
     };
-    console.log(data);
+   
     await ax.post("/tasks/", data)
       .then(() => {
         event.target.reset();
@@ -88,10 +88,10 @@ function TaskContextProvider({ children }) {
       id: openForm.task.id,
     };
 
-    console.log(data);
+  
     await ax.put("/tasks/", data)
       .then((response) => {
-        console.log("Task edited successfully:", response.data);
+        console.info("Task edited successfully:", response.data);
         setOpenForm({ bool: false, task: null });
         fetchTasks();
         event.target.reset();
@@ -107,7 +107,7 @@ function TaskContextProvider({ children }) {
   async function fetchTasks() {
     await ax.get("/tasks/all").then((response) => {
       const tasks = response.data;
-      console.log(tasks);
+     
       if (tasks?.length === 0 || !tasks) return;
       setTodo(tasks.filter((task) => task.status === 3));
       setInProgress(tasks.filter((task) => task.status === 2));

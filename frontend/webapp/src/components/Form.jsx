@@ -15,7 +15,7 @@ export default function TaskForm({ updateBoard, task, handleSubmit }) {
     });
   }, []);
 
-  console.log(task);
+
 
   return (
     <form

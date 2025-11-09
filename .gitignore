@@ -849,3 +849,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+backend/backend.exe
+frontend/webapp/src/axios/sql.js

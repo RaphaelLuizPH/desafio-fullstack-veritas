@@ -9,14 +9,15 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// const (
-// 	DB_NAME = "VERITASdb"
-// 	PORT    = 3306
-// 	USER    = "VERITAS"
-// 	PASS    = "VERITAS"
-// 	HOST    = "db"
-// )
+const (
+	DB_NAME = "VERITASdb"
+	PORT    = 3306
+	USER    = "VERITAS"
+	PASS    = "VERITAS"
+	HOST    = "db"
+)
 
+/*
  const (
  	DB_NAME = "VERITASdb"
  	PORT    = 3307
@@ -25,7 +26,7 @@ import (
  	HOST    = "localhost"
  )
 
-
+*/
 
 
 func ConnectDB() (*sql.DB, error) {
@@ -43,7 +44,7 @@ func ConnectDB() (*sql.DB, error) {
 	}
 
 	
-	executeSQLScript(db, "./db/insert_tasks_real.sql");
+	// executeSQLScript(db, "./db/insert_tasks_real.sql");
 
 	return db, nil
 }

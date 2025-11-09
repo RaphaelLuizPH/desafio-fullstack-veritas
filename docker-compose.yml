@@ -1,23 +1,6 @@
 version: "3.9"
 
 services:
-  go-app:
-    container_name: go-api-veritas
-    image: go-api-veritas
-    build: ./backend
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-
-  frontend:
-    container_name: veritas-frontend
-    build:
-      context: ./frontend/webapp
-    ports:
-      - "5174:80"  
-    depends_on:
-      - go-app
 
   db:
     container_name: veritas_db
@@ -31,12 +14,35 @@ services:
     ports:
       - "3307:3306"
     volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
+
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  go-app:
+    container_name: go-api-veritas
+    image: go-api-veritas
+    build: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    container_name: veritas-frontend
+    build:
+      context: ./frontend/webapp
+    ports:
+      - "5174:80"
+    depends_on:
+      - go-app
+
+
 
 volumes:
   db_data:

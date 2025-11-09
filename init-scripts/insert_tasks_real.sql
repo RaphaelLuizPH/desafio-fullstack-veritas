@@ -1,9 +1,28 @@
-TRUNCATE TABLE Tasks;
+CREATE DATABASE IF NOT EXISTS VERITASdb;
+USE VERITASdb;
+
+
+CREATE TABLE IF NOT EXISTS VERITASdb.Users (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Tasks (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Title VARCHAR(255) NOT NULL,
+    Description TEXT,
+    DueDate DATE DEFAULT (CURRENT_DATE),
+    AssignedTo INT,
+    Status VARCHAR(50) CHECK (Status IN ('ToDo', 'inProgress', 'completed')) NOT NULL DEFAULT 'ToDo',
+    CONSTRAINT FK_USER_TASK FOREIGN KEY (AssignedTo) REFERENCES VERITASdb.Users(ID)
+);
+
+
 
 
 INSERT INTO VERITASdb.Users
 (Name)
-VALUES('João'), ('Maria'), ('Paulo'), ('Tiago');
+VALUES('Joao'), ('Maria'), ('Paulo'), ('Tiago');
 
 
 INSERT INTO Tasks (Title, Description, DueDate, AssignedTo, Status) VALUES
