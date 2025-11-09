@@ -110,7 +110,7 @@ Comunicação entre frontend e backend acontece por chamadas RESTful com payload
 
 ## Como rodar o projeto
 
-### Via Docker Compose
+### Via Docker Compose (RECOMENDADO)
 
 1. Certifique-se de ter Docker e Docker Compose instalados.
 
