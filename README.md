@@ -121,6 +121,8 @@ Comunicação entre frontend e backend acontece por chamadas RESTful com payload
 docker-compose  up  --build
 
 ```
+Caso aconteça alguma problema na criação dos conteiners, use o comando ```  docker-compose down -v ``` e tente novamente.
+
 
 - O backend será exposto em `http://localhost:8080`.
 
