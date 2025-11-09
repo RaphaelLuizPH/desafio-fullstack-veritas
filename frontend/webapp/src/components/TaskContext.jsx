@@ -138,7 +138,7 @@ function TaskContextProvider({ children }) {
         </div>
       )}
       <Toaster
-        position="bottom-center"
+        position="middle-right"
         reverseOrder={false}
         gutter={8}
         toasterId="default"

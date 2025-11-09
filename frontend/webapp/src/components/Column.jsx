@@ -44,7 +44,7 @@ function Column({ title, tasks, id, openForm }) {
   const { openTaskForm, isPendingTask } = util;
 
   return (
-    <div className="2xl:h-[85%] 2xl:min-h-190 h-[90%]  w-[30%] 2xl:flex-0 flex-col 3xl:flex-1 bg-veritas-dark ">
+    <div className="2xl:h-[85%] 2xl:min-h-190 xl:min-w-[30%] h-[90%] min-h-fit  w-[30%] 2xl:flex-0 flex-col 3xl:flex-1 bg-veritas-dark ">
       <div className="bg-veritas-backgroundColor  h-fit p-4 flex justify-between items-center">
         <h2 className="text-veritas-textColor">
           <span className="text-veritas-light italic mr-1">
@@ -73,7 +73,7 @@ function Column({ title, tasks, id, openForm }) {
             <Container
               ref={provided.innerRef}
               {...provided.droppableProps}
-              className={"overflow-y-auto no-scrollbar h-[90%] w-full flex flex-col flex-2/3  2xl:block"}
+              className={"overflow-y-auto no-scrollbar h-[90%] w-full items-center 2xl:flex flex-col 3xl:flex-row 3xl:flex-wrap   3xl:justify-center "}
             >
               {tasks &&
                 tasks.map((task, index) => (
