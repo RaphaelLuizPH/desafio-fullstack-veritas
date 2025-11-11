@@ -45,12 +45,13 @@ function Task({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          className="w-full  3xl:px-12"
         >
           <div
             onClick={editTask}
             className={`bg-white duration-75  ${DragginScaleStyles(
               snapshot
-            )} rounded-lg m-3 shadow-md p-4  mb-1  border-l-4 flex flex-col 2xl:w-120 ${getStatusColor(
+            )} rounded-lg m-3 shadow-md p-4  mb-1  border-l-4 flex flex-col 3xl:w-full ${getStatusColor(
               snapshot.draggingOver
             )}`}
           >

@@ -8,7 +8,10 @@ function App() {
 
   return (
     <>
-      <Board openForm={openTaskForm} open={openForm} />
+   
+    <Board openForm={openTaskForm} open={openForm} />
+ 
+  
     </>
   );
 }
