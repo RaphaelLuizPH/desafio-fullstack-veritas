@@ -216,7 +216,9 @@ npm  run  dev
 
 - **Validação**: validações de entrada ainda simples (bindings do Gin). Implementar validação personalizada e mensagens localizadas.
 
-- **Segurança**: Proteger endpoints com JWT, aplicando conceitos de autorização e autenticação.
+- **Segurança**: Proteger endpoints com JWT, aplicando conceitos de autorização e autenticação. 
+
+- **Responsividade**: Melhorar layout para dispositivos móveis e telas maiores.
 
 ## Documentação
 
